@@ -1,0 +1,43 @@
+The problem: We need a script that can automate the IDS alert tickets:
+
+The solution Algo: 
+
+1. Find an IP in splunk.
+2. Request splunk to send signature JSON file.
+3. Search in firewall index. If rule < 35 then: STOP. REPEAT UNTIL FALSE.
+4. Check Servicenow.
+5. Get IDS ALERT.
+6. Get RAW.
+7. Get FIREWALL SEARCH.
+8. Get PCAP STRING.
+9. OSINT API's
+10. Create text file.
+
+
+API's Needed:
+
+1. Splunk.
+2. Servicenow??? Possibly.
+2. VirusTotal.
+3. Hetrix Tools.
+4. ipapi. : "https://ipapi.co/<IP-ADDRESS-HERE>/json/"
+5. Dawhois.
+
+
+#
+#
+#	HOW TO CONVERT JSON:	
+#	$obj = Invoke-WebRequest -uri "<API-URI>"	
+#	$obj2 = ConvertFrom-JSON -InputObject $obj 
+#	
+
+
+
+Splunk Variables Needed:
+
+1.
+
+Splunk:
+1. Need URL for ips ids
+2. Use that to get one IP.
+3. Need URL to get events from search of that IP.
