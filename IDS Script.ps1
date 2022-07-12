@@ -29,6 +29,8 @@ $htrx
 $geo
 $vtot
 
+$outPath = "${env:USERPROFILE}\Documents\report.txt"
+
 #HetrixTools Function
 
 function getHetrix($ip){
@@ -112,13 +114,13 @@ function main(){
     Write-Output '======================= IDS_SCRIPT_V3 @Author: Husam Abdalla ======================='
 
 
-    if($(Test-Path -Path "${env:USERPROFILE}\Documents\report.txt") -eq $false){
+    if($(Test-Path -Path $outPath) -eq $false){
     
-        New-Item -Path "${env:USERPROFILE}\Documents\report.txt"
+        New-Item -Path $outPath
     
         } else{
     
-            Remove-Item "${env:USERPROFILE}\Documents\report.txt" -Force
+            Remove-Item $outPath -Force
 
             }
 
@@ -130,34 +132,34 @@ function main(){
     $vtot = getVtotal($ipToScan)
 
 
-    Write-Output 'Hetrix Tools Report:' | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    Write-Output '====================' | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    Write-Output "Black List count:" $htrx.blacklisted_count | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    Write-Output "Black Listed on:" $htrx.blacklisted_on | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    Write-Output "Report Links:" $htrx.links | echo >> "${env:USERPROFILE}\Documents\report.txt"
+    Write-Output 'Hetrix Tools Report:' | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Write-Output '====================' | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Write-Output "Black List count:" $htrx.blacklisted_count | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Write-Output "Black Listed on:" $htrx.blacklisted_on | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Write-Output "Report Links:" $htrx.links | Tee-Object -Append $outPath -Encoding 'UTF-8'
     
     #Hetrix Tools Report completed
     
-    echo "" | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    echo "" | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    echo "====================" | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    Write-Output 'IP Geolocation (IP API):' | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    echo "====================" | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    Write-Output $geo | echo >> "${env:USERPROFILE}\Documents\report.txt"
+    echo "" | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    echo "" | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    echo "====================" | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Write-Output 'IP Geolocation (IP API):' | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    echo "====================" | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Write-Output $geo | Tee-Object -Append $outPath -Encoding 'UTF-8'
 
     #IP geolocation report completed.
 
-    echo "" | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    echo "" | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    echo "====================" | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    Write-Output 'VirusTotal Report:' | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    echo "====================" | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    Write-Output $vtot.data.attributes | echo >> "${env:USERPROFILE}\Documents\report.txt"
-
+    echo "" | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    echo "" | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    echo "====================" | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Write-Output 'VirusTotal Report:' | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    echo "====================" | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Write-Output $vtot.data.attributes.last_analysis_stats | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Write-Output "`n"$vtot.data.attributes.last_analysis_results | Tee-Object -Append $outPath -Encoding 'UTF-8'
     #VirusTotal report complete.
 
-    verdict | echo >> "${env:USERPROFILE}\Documents\report.txt"
-    Get-Content -Path "${env:USERPROFILE}\Documents\report.txt"
+    verdict | Tee-Object -Append $outPath -Encoding 'UTF-8'
+    Get-Content -Path $outPath
 
 }
 
