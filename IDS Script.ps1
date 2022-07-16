@@ -20,6 +20,9 @@
 #   --url https://www.virustotal.com/api/v3/ip_addresses/{ip} \
 #   --header 'x-apikey: <your API key>'
 #
+#
+#   apivoid: 86eaebd31d4b4ebd70959642f7df20a09b010ed9
+#
 ###################################################################
 
 #Globals::
