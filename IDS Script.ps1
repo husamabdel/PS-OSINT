@@ -11,27 +11,28 @@
 #   Last Modified: $NULL
 #
 #   Hetrix API:
-#   a1a37d5b2f9f70c2958d198d48f3f588
+#   
 #   https://api.hetrixtools.com/v2/<API_TOKEN>/blacklist-check/ipv4/<IP_ADDRESS>/
 #
 #   VirusTotal API:
-#   ad7b66c409ddd5f957a9fe2fea5732c12f1c9d58286e14a4cfc68dbade4735ba
+#   
 #   curl --request GET \
 #   --url https://www.virustotal.com/api/v3/ip_addresses/{ip} \
 #   --header 'x-apikey: <your API key>'
 #
 #
-#   apivoid: 86eaebd31d4b4ebd70959642f7df20a09b010ed9
+#   apivoid: 
 #
 ###################################################################
 
 #Globals::
 
-$ipToScan
-$htrx
-$geo
-$vtot
-
+$Global:ipToScan
+$Global:htrx
+$Global:geo
+$Global:vtot
+$Global:apiKey
+$Global:apiKey2
 $outPath = "${env:USERPROFILE}\Documents\report.txt"
 
 #HetrixTools Function
@@ -40,7 +41,7 @@ function getHetrix($ip){
 
     $ip = $ipToScan
 
-    $obj = Invoke-WebRequest -Uri "https://api.hetrixtools.com/v2/a1a37d5b2f9f70c2958d198d48f3f588/blacklist-check/ipv4/${ip}/"
+    $obj = Invoke-WebRequest -Uri "https://api.hetrixtools.com/v2/${apiKey}/blacklist-check/ipv4/${ip}/"
     $hetrix = ConvertFrom-Json -InputObject $obj
 
     return $hetrix
@@ -66,7 +67,7 @@ function getVtotal($ip){
 
     $ip = $ipToScan
 
-    $obj = Invoke-WebRequest -Uri "https://www.virustotal.com/api/v3/ip_addresses/${ipToScan}" -Method GET -Headers @{'x-apikey'= 'ad7b66c409ddd5f957a9fe2fea5732c12f1c9d58286e14a4cfc68dbade4735ba'}
+    $obj = Invoke-WebRequest -Uri "https://www.virustotal.com/api/v3/ip_addresses/${ipToScan}" -Method GET -Headers @{'x-apikey'= $apiKey2}
     $vtotoal = ConvertFrom-Json -InputObject $obj
 
     return $vtotoal
@@ -129,6 +130,8 @@ function main(){
 
     
     $ipToScan = Read-Host 'Please type the IP address to scan'
+    $apiKey = Read-Host 'Please enter the Hetrix Tools API Key'
+    $apiKey2 = Read-Host 'Please enter the VirusTotal API Key'
 
     $htrx = getHetrix($ipToScan)
     $geo = getGeo($ipToScan)
